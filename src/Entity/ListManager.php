@@ -39,17 +39,25 @@ class ListManager
     /**
      * @var string
      */
-    protected $notifyOnSubscribe;
+    protected $notifyOnSubscribe = '';
 
     /**
      * @var string
      */
-    protected $emailTypeOption;
+    protected $notifyOnUnSubscribe = '';
 
     /**
      * @var string
      */
-    protected $visibility;
+    protected $emailTypeOption = false;
+
+    /**
+     * @var string
+     */
+    protected $visibility = 'prv';
+
+    const VISIBILITY_PRIVATE = 'prv';
+    const VISIBILITY_PUBLIC = 'pub';
 
     public function __construct()
     {
@@ -199,5 +207,55 @@ class ListManager
     {
         $this->visibility = $visibility;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotifyOnUnSubscribe()
+    {
+        return $this->notifyOnUnSubscribe;
+    }
+
+    /**
+     * @param string $notifyOnUnSubscribe
+     * @return ListManager
+     */
+    public function setNotifyOnUnSubscribe($notifyOnUnSubscribe)
+    {
+        $this->notifyOnUnSubscribe = $notifyOnUnSubscribe;
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return json_encode([
+            'name' => $this->getName(),
+            'contact' => [
+                'company' => $this->getContact()->getCompany(),
+                'address1' => $this->getContact()->getAddress1(),
+                'address2' => $this->getContact()->getAddress2(),
+                'city' => $this->getContact()->getCity(),
+                'state' => $this->getContact()->getState(),
+                'zip' => $this->getContact()->getZip(),
+                'country' => $this->getContact()->getCountry(),
+                'phone' => $this->getContact()->getPhone(),
+            ],
+            'permission_reminder' => $this->getPermissionReminder(),
+            'use_archive_bar' => $this->isUseArchiveBar(),
+            'campaign_defaults' => [
+                'from_name' => $this->getCampaignDefaults()->getFromName(),
+                'from_email' => $this->getCampaignDefaults()->getFromEmail(),
+                'subject' => $this->getCampaignDefaults()->getSubject(),
+                'language' => $this->getCampaignDefaults()->getLanguage(),
+            ],
+            'notify_on_subscribe' => $this->getNotifyOnSubscribe(),
+            'notify_on_unsubscribe' => $this->getNotifyOnUnSubscribe(),
+            'email_type_option' => $this->getEmailTypeOption(),
+            'visibility' => $this->getVisibility(),
+        ]);
     }
 }
