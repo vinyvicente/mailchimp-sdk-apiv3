@@ -2,7 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
-$client = new \MailChimp\Client('https://us1.api.mailchimp.com', '[YOUR-TOKEN]');
+$client = new \MailChimp\Client('https://us1.api.mailchimp.com', '[our-token]');
 
 $myList = new \MailChimp\Entity\ListManager();
 $myList->setName('Test List' . rand())

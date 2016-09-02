@@ -5,6 +5,7 @@ namespace MailChimp;
 use MailChimp\Entity\ListManager;
 use MailChimp\Response\ListResponse;
 use GuzzleHttp\Client as HttpClient;
+use MailChimp\Response\MemberResponse;
 use MailChimp\Response\MergeFieldResponse;
 
 /**
@@ -100,11 +101,11 @@ class Client
     /**
      * @param int $listId
      * @param ListManager\Member $member
-     * @return MergeFieldResponse
+     * @return MemberResponse
      */
     public function addMember($listId, ListManager\Member $member)
     {
-        $fieldResponse = new MergeFieldResponse();
+        $fieldResponse = new MemberResponse();
 
         try {
             $response = $this->httpClient->post('/3.0/lists/' . $listId . '/members', [
@@ -113,18 +114,13 @@ class Client
             ]);
 
             $result = json_decode($response->getBody()->getContents());
-
-            var_dump($result);
-
-            if (!empty($result->merge_id)) {
-                $fieldResponse->setSuccess(true);
+            if (!empty($result->id)) {
+                $fieldResponse->setId($result->id)
+                    ->setSuccess(true);
             }
             return $fieldResponse;
 
         } catch (\Exception $e) {
-
-            var_dump($e);exit;
-
             return $fieldResponse;
         }
     }
