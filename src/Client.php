@@ -5,6 +5,7 @@ namespace MailChimp;
 use MailChimp\Entity\ListManager;
 use MailChimp\Response\ListResponse;
 use GuzzleHttp\Client as HttpClient;
+use MailChimp\Response\MergeFieldResponse;
 
 /**
  * Class Client
@@ -67,6 +68,64 @@ class Client
 
         } catch (\Exception $e) {
             return $listResponse;
+        }
+    }
+
+    /**
+     * @param $listId
+     * @param ListManager\MergeFields $fields
+     * @return MergeFieldResponse
+     */
+    public function addMergeField($listId, ListManager\MergeFields $fields)
+    {
+        $fieldResponse = new MergeFieldResponse();
+
+        try {
+            $response = $this->httpClient->post('/3.0/lists/' . $listId . '/merge-fields', [
+                'body' => (string) $fields,
+                'headers' => $this->getHeaderOAuth2(),
+            ]);
+
+            $result = json_decode($response->getBody()->getContents());
+            if (!empty($result->merge_id)) {
+                $fieldResponse->setSuccess(true);
+            }
+            return $fieldResponse;
+
+        } catch (\Exception $e) {
+            return $fieldResponse;
+        }
+    }
+
+    /**
+     * @param int $listId
+     * @param ListManager\Member $member
+     * @return MergeFieldResponse
+     */
+    public function addMember($listId, ListManager\Member $member)
+    {
+        $fieldResponse = new MergeFieldResponse();
+
+        try {
+            $response = $this->httpClient->post('/3.0/lists/' . $listId . '/members', [
+                'body' => (string) $member,
+                'headers' => $this->getHeaderOAuth2(),
+            ]);
+
+            $result = json_decode($response->getBody()->getContents());
+
+            var_dump($result);
+
+            if (!empty($result->merge_id)) {
+                $fieldResponse->setSuccess(true);
+            }
+            return $fieldResponse;
+
+        } catch (\Exception $e) {
+
+            var_dump($e);exit;
+
+            return $fieldResponse;
         }
     }
 }
