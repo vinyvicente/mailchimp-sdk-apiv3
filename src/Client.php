@@ -124,4 +124,32 @@ class Client
             return $fieldResponse;
         }
     }
+
+    /**
+     * @param string $listId
+     * @param string $hashId
+     * @param ListManager\Member $member
+     * @return MemberResponse
+     */
+    public function updateMember($listId, $hashId, ListManager\Member $member)
+    {
+        $fieldResponse = new MemberResponse();
+
+        try {
+            $response = $this->httpClient->post('/3.0/lists/' . $listId . '/members/' . $hashId, [
+                'body' => (string) $member,
+                'headers' => $this->getHeaderOAuth2(),
+            ]);
+
+            $result = json_decode($response->getBody()->getContents());
+            if (!empty($result->id)) {
+                $fieldResponse->setId($result->id)
+                    ->setSuccess(true);
+            }
+            return $fieldResponse;
+
+        } catch (\Exception $e) {
+            return $fieldResponse;
+        }
+    }
 }

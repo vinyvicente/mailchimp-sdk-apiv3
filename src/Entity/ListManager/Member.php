@@ -75,6 +75,11 @@ class Member
     protected $timestampOpt;
 
     /**
+     * @var string used to update
+     */
+    protected $statusIfNew;
+
+    /**
      * @return string
      */
     public function getEmailAddress()
@@ -293,8 +298,35 @@ class Member
     /**
      * @return string
      */
+    public function getStatusIfNew()
+    {
+        return $this->statusIfNew;
+    }
+
+    /**
+     * @param string $statusIfNew
+     * @return Member
+     */
+    public function setStatusIfNew($statusIfNew)
+    {
+        $this->statusIfNew = $statusIfNew;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
+        if (!empty($this->statusIfNew)) {
+            return json_encode([
+                'email_address' => $this->emailAddress,
+                'status_if_new' => $this->statusIfNew,
+                'merge_fields' => (object) $this->mergeFields
+            ]);
+        }
+
         return json_encode([
             'email_address' => $this->emailAddress,
             'status' => $this->status,
