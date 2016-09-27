@@ -21,9 +21,6 @@
         }
     },
     "minimum-stability": "dev",
-    "bin": [
-        "phpunit"
-    ],
     "license": "MIT",
     "authors": [
         {
