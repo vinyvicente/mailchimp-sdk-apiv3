@@ -136,7 +136,7 @@ class Client
         $fieldResponse = new MemberResponse();
 
         try {
-            $response = $this->httpClient->post('/3.0/lists/' . $listId . '/members/' . $hashId, [
+            $response = $this->httpClient->put('/3.0/lists/' . $listId . '/members/' . $hashId, [
                 'body' => (string) $member,
                 'headers' => $this->getHeaderOAuth2(),
             ]);
