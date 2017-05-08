@@ -1,6 +1,7 @@
 <?php
 
 namespace MailChimp\Entity\ListManager;
+
 use MailChimp\Entity\ListManager\MergeFields\Options;
 
 /**

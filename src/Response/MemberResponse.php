@@ -16,7 +16,7 @@ class MemberResponse
     /**
      * @var string
      */
-    protected $id;
+    protected $memberId;
 
     /**
      * @return boolean
@@ -41,16 +41,16 @@ class MemberResponse
      */
     public function getId()
     {
-        return $this->id;
+        return $this->memberId;
     }
 
     /**
      * @param string $id
      * @return MemberResponse
      */
-    public function setId($id)
+    public function setId($memberId)
     {
-        $this->id = $id;
+        $this->memberId = $memberId;
         return $this;
     }
 }

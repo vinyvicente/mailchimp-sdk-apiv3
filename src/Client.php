@@ -66,7 +66,6 @@ class Client
                 ->setSuccess(true);
 
             return $listResponse;
-
         } catch (\Exception $e) {
             return $listResponse;
         }
@@ -92,7 +91,6 @@ class Client
                 $fieldResponse->setSuccess(true);
             }
             return $fieldResponse;
-
         } catch (\Exception $e) {
             return $fieldResponse;
         }
@@ -119,7 +117,6 @@ class Client
                     ->setSuccess(true);
             }
             return $fieldResponse;
-
         } catch (\Exception $e) {
             return $fieldResponse;
         }
@@ -147,7 +144,33 @@ class Client
                     ->setSuccess(true);
             }
             return $fieldResponse;
+        } catch (\Exception $e) {
+            return $fieldResponse;
+        }
+    }
 
+    /**
+     * @param string $listId
+     * @param string $hashId
+     * @param ListManager\Member $member
+     * @return MemberResponse
+     */
+    public function deleteMember($listId, $hashId, ListManager\Member $member)
+    {
+        $fieldResponse = new MemberResponse();
+
+        try {
+            $response = $this->httpClient->delete('/3.0/lists/' . $listId . '/members/' . $hashId, [
+                'body' => (string) $member,
+                'headers' => $this->getHeaderOAuth2(),
+            ]);
+
+            if (!empty(204 === $response->getStatusCode())) {
+                $fieldResponse->setId($hashId)
+                    ->setSuccess(true);
+            }
+
+            return $fieldResponse;
         } catch (\Exception $e) {
             return $fieldResponse;
         }
