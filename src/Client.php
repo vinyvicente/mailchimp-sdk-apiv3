@@ -122,6 +122,23 @@ class Client
         }
     }
 
+    public function getList($listId, $memberId)
+    {
+        try {
+            $response = $this->httpClient->get('/3.0/lists/' . $listId . '/members/' . $memberId, [
+                'headers' => $this->getHeaderOAuth2(),
+            ]);
+
+            $result = json_decode($response->getBody()->getContents());
+            if (!empty($result)) {
+                return $result;
+            }
+        } catch (\Exception $e) {
+        }
+
+        return new \stdClass();
+    }
+
     /**
      * @param string $listId
      * @param string $hashId
@@ -150,18 +167,16 @@ class Client
     }
 
     /**
-     * @param string $listId
-     * @param string $hashId
-     * @param ListManager\Member $member
+     * @param $listId
+     * @param $hashId
      * @return MemberResponse
      */
-    public function deleteMember($listId, $hashId, ListManager\Member $member)
+    public function deleteMember($listId, $hashId)
     {
         $fieldResponse = new MemberResponse();
 
         try {
             $response = $this->httpClient->delete('/3.0/lists/' . $listId . '/members/' . $hashId, [
-                'body' => (string) $member,
                 'headers' => $this->getHeaderOAuth2(),
             ]);
 
