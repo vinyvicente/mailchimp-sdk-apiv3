@@ -25,6 +25,11 @@ class Client
     protected $token;
 
     /**
+     * @var string
+     */
+    private $errorMessageFloated = '';
+
+    /**
      * @param string $baseUri
      * @param string $token
      */
@@ -43,6 +48,14 @@ class Client
             'Authorization' => 'OAuth2 ' . $this->token,
             'Content-type' => 'application/json',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessageFloated;
     }
 
     /**
@@ -67,6 +80,8 @@ class Client
 
             return $listResponse;
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
+
             return $listResponse;
         }
     }
@@ -92,6 +107,8 @@ class Client
             }
             return $fieldResponse;
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
+
             return $fieldResponse;
         }
     }
@@ -118,6 +135,7 @@ class Client
             }
             return $fieldResponse;
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
             return $fieldResponse;
         }
     }
@@ -162,6 +180,8 @@ class Client
             }
             return $fieldResponse;
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
+
             return $fieldResponse;
         }
     }
@@ -187,6 +207,8 @@ class Client
 
             return $fieldResponse;
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
+            
             return $fieldResponse;
         }
     }
