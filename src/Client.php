@@ -147,11 +147,9 @@ class Client
                 'headers' => $this->getHeaderOAuth2(),
             ]);
 
-            $result = json_decode($response->getBody()->getContents());
-            if (!empty($result)) {
-                return $result;
-            }
+            return json_decode($response->getBody()->getContents());
         } catch (\Exception $e) {
+            $this->errorMessageFloated = $e->getMessage();
         }
 
         return new \stdClass();
@@ -208,7 +206,7 @@ class Client
             return $fieldResponse;
         } catch (\Exception $e) {
             $this->errorMessageFloated = $e->getMessage();
-            
+
             return $fieldResponse;
         }
     }
